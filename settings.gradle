@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "MyPagingSystem"
 include ':app'
-include ':pagingSysyem'
+include ':pagingSystem'
