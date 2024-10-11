@@ -4,13 +4,17 @@ plugins {
 }
 
 android {
-    namespace 'com.sandun.pagingSystem'
+    namespace 'com.sandun.pagingSysyem'
     compileSdk 34
 
     defaultConfig {
         minSdk 23
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
+        versionCode 1
+        versionName '1.0.5'
+        targetSdk 34
     }
 
     buildTypes {
@@ -19,14 +23,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
 }
-
 dependencies {
+
     implementation libs.appcompat
     implementation libs.material
     testImplementation libs.junit
@@ -37,3 +40,43 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:4.12.0'
     implementation 'com.google.code.gson:gson:2.10.1'
 }
+
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.findByName('release')
+                groupId = 'com.sandun'
+                artifactId = 'pagingsystem'
+                version = '1.0.7'
+            }
+        }
+    }
+}
+
+
+
+
+
+
+//publishing {
+//    publications {
+//        bar(MavenPublication){
+//            groupId "com.sandun"
+//            artifactId "pagingsystem"
+//            version "1.0.6"
+//            artifact("$buildDir/outputs/aar/pagingSystem-release.aar")
+//        }
+//    }
+//    repositories {
+//        maven{
+//            name  "PagingSystem"
+//            url  uri("https://maven.pkg.github.com/SandunBuddhika/MyPagingSystem")
+//            credentials{
+//                username = System.getenv("GIT_HUB_USERNAME")
+//                password = System.getenv("GIT_HUB_TOKEN")
+//            }
+//        }
+//    }
+//}
