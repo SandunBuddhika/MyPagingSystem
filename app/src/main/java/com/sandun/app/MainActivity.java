@@ -30,8 +30,7 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        PagingSource<ItemService, ItemDTO> source = new PagingSource<>(new RestClient<ItemService>(ItemService.class, "")
-                .createService(), 10, findViewById(R.id.scrollView), findViewById(R.id.item_container), this);
+        PagingSource<ItemService, ItemDTO> source = new PagingSource<>(new RestClient<ItemService>(ItemService.class, "").createService(), 10, findViewById(R.id.scrollView), findViewById(R.id.item_container), this);
 
     }
 }

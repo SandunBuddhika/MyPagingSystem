@@ -3,7 +3,7 @@ package com.sandun.pagingSysyem.model;
 
 import com.sandun.pagingSysyem.service.CompactPagingService;
 
-public class LoadingStateListener<R extends CompactPagingService,D> extends CompactMediator<R,D> {
+public class LoadingStateListener<R, D> extends CompactMediator<R, D> {
 
 
     public void listener() {

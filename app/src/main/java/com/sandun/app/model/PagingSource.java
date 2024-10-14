@@ -11,6 +11,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.sandun.app.adapter.ItemAdapter;
 import com.sandun.app.dto.ItemDTO;
+import com.sandun.app.service.ItemService;
 import com.sandun.pagingSysyem.enums.LoadingStates;
 import com.sandun.pagingSysyem.model.PagingSourceCompact;
 import com.sandun.pagingSysyem.service.CompactPagingService;
@@ -21,7 +22,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PagingSource<R extends CompactPagingService, D> extends PagingSourceCompact<R, D> {
+public class PagingSource<R, D> extends PagingSourceCompact<R, D> {
     public PagingSource(R service, int itemSize, NestedScrollView scrollView, RecyclerView recyclerView, Activity activity) {
         super(service, itemSize, scrollView, recyclerView, activity);
     }
@@ -50,6 +51,7 @@ public class PagingSource<R extends CompactPagingService, D> extends PagingSourc
     public void loadData() {
         if (isLoading == LoadingStates.DONE) {
             changeLoadingState(LoadingStates.LOADING);
+            ItemService service = (ItemService) this.service;
             service.getItemsByPage("test.php", currentPage, itemSize).enqueue(new Callback<JsonObject>() {
                 @Override
                 public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {

@@ -1,9 +1,7 @@
 package com.sandun.pagingSysyem.model;
 
 
-import com.sandun.pagingSysyem.service.CompactPagingService;
-
-public abstract class CompactMediator<R extends CompactPagingService, D> {
+public abstract class CompactMediator<R, D> {
     protected PagingSourceCompact<R, D> source;
 
     public void setSource(PagingSourceCompact<R, D> source) {

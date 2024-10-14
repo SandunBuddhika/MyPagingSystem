@@ -11,7 +11,7 @@ import com.sandun.pagingSysyem.service.CompactPagingService;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class PagingSourceCompact<R extends CompactPagingService,D> {
+public abstract class PagingSourceCompact<R,D> {
 
     private final List<D> LIST = new ArrayList<>();
     protected int currentPage = 1;
