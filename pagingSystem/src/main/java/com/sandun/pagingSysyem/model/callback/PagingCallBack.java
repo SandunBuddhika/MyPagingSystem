@@ -2,7 +2,6 @@ package com.sandun.pagingSysyem.model.callback;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.JsonObject;
 import com.sandun.pagingSysyem.adapter.AdapterPagingItem;
 import com.sandun.pagingSysyem.model.PagingSource;
 

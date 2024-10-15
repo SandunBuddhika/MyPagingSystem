@@ -7,7 +7,6 @@ import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.Gson;
 import com.sandun.pagingSysyem.adapter.AdapterPagingItem;
 import com.sandun.pagingSysyem.enums.LoadingStates;
 import com.sandun.pagingSysyem.model.callback.PagingCallBack;
