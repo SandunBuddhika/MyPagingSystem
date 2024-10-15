@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void handleRequestData(String data, RecyclerView.Adapter adapter, List<ItemDTO> list) {
+            public void handleRequestData(String data, PagingSource<ItemDTO> source, RecyclerView.Adapter adapter, List<ItemDTO> list) {
                 if (data != null && !data.isEmpty()) {
                     try {
                         JsonObject object = JsonParser.parseString(data).getAsJsonObject();

@@ -27,7 +27,7 @@ public class PagingSource<D> {
 
     private OkHttpClient client;
     private final List<D> LIST = new ArrayList<>();
-    protected int currentPage = 1;
+    protected int currentPage;
     protected int itemSize;
     protected LoadingStates isLoading = LoadingStates.DONE;
     protected Activity activity;
@@ -85,10 +85,19 @@ public class PagingSource<D> {
 
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                callBack.handleRequestData(response.body().string(), adapter, LIST);
+                callBack.handleRequestData(response.body().string(), PagingSource.this, adapter, LIST);
             }
         });
 
+    }
+
+    public void removeAllData() {
+        LIST.removeAll(LIST);
+        adapter.notifyDataSetChanged();
+    }
+
+    public void removeItem(int index) {
+        LIST.remove(index);
     }
 
     protected void changeLoadingState(LoadingStates state) {
@@ -96,6 +105,13 @@ public class PagingSource<D> {
         stateListener.listener();
     }
 
+    public int getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
+    }
 
     protected List<D> getList() {
         return LIST;

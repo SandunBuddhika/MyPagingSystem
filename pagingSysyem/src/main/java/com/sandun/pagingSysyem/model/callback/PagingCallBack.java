@@ -11,7 +11,7 @@ import java.util.List;
 public interface PagingCallBack<D> {
     void handleViewCreate(D data, AdapterPagingItem.ViewHolder viewHolder);
 
-    void handleRequestData(String data, RecyclerView.Adapter adapter, List<D> list);
+    void handleRequestData(String data, PagingSource<D> source, RecyclerView.Adapter adapter, List<D> list);
 
     void handleRequestError(Throwable throwable);
 }
