@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RestClient<T> {
     private Retrofit client;
     private Class<T> serviceClass;
-    private static final String BASE_URL = "http://192.168.1.27/test/";
+    public static final String BASE_URL = "http://192.168.1.27/test/";
 
     public RestClient(Class<T> serviceClass,String endPoint) {
         this.serviceClass = serviceClass;

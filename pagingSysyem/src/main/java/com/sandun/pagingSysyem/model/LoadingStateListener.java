@@ -1,9 +1,12 @@
 package com.sandun.pagingSysyem.model;
 
 
+import com.google.gson.JsonObject;
 import com.sandun.pagingSysyem.service.CompactPagingService;
 
-public class LoadingStateListener<R, D> extends CompactMediator<R, D> {
+import retrofit2.Call;
+
+public class LoadingStateListener<D> extends CompactMediator< D> {
 
 
     public void listener() {
