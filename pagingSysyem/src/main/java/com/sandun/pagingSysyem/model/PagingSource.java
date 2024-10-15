@@ -72,22 +72,26 @@ public class PagingSource<D> {
 
 
     public void loadData() {
-        getData.removeAllQueryParameters("page").removeAllQueryParameters("itemCount").addQueryParameter("page", String.valueOf(currentPage)).addQueryParameter("itemCount", String.valueOf(itemSize));
+        if (isLoading == LoadingStates.DONE) {
+            changeLoadingState(LoadingStates.LOADING);
+            getData.removeAllQueryParameters("page").removeAllQueryParameters("itemCount").addQueryParameter("page", String.valueOf(currentPage)).addQueryParameter("itemCount", String.valueOf(itemSize));
+            String url = getData.build().toString();
 
-        String url = getData.build().toString();
+            Request request = new Request.Builder().url(url).get().build();
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                    callBack.handleRequestError(e.getCause());
+                    changeLoadingState(LoadingStates.DONE);
+                }
 
-        Request request = new Request.Builder().url(url).get().build();
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                callBack.handleRequestError(e.getCause());
-            }
-
-            @Override
-            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                callBack.handleRequestData(response.body().string(), PagingSource.this, adapter, LIST);
-            }
-        });
+                @Override
+                public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                    callBack.handleRequestData(response.body().string(), PagingSource.this, adapter, LIST);
+                    changeLoadingState(LoadingStates.DONE);
+                }
+            });
+        }
 
     }
 

@@ -31,7 +31,7 @@ publishing {
         bar(MavenPublication) {
             groupId "com.sandun"
             artifactId "pagingsystem"
-            version "2.0.7"
+            version "2.0.10"
             artifact("$buildDir/outputs/aar/pagingSysyem-release.aar")
         }
     }
