@@ -41,6 +41,8 @@ public class PagingSource<D> {
     protected PagingCallBack<D> callBack;
     protected int layoutId;
 
+    private boolean pagingStatus = true;
+
     public PagingSource(int layoutId, HttpUrl.Builder getData, int itemSize, NestedScrollView scrollView, RecyclerView recyclerView, Activity activity, boolean isReverse, PagingCallBack<D> callBack) {
         this.itemSize = itemSize;
         this.client = new OkHttpClient.Builder().build();
@@ -78,7 +80,7 @@ public class PagingSource<D> {
             }
         };
         if (isReverse) {
-//            layoutManager.setStackFromEnd(true);
+            layoutManager.setStackFromEnd(true);
         }
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         adapter = new AdapterPagingItem<>(layoutId, callBack, LIST);
@@ -91,7 +93,7 @@ public class PagingSource<D> {
 
 
     public void loadData() {
-        if (isLoading == LoadingStates.DONE) {
+        if (pagingStatus && isLoading == LoadingStates.DONE) {
             changeLoadingState(LoadingStates.LOADING);
             getData.removeAllQueryParameters("page").removeAllQueryParameters("itemCount").addQueryParameter("page", String.valueOf(currentPage)).addQueryParameter("itemCount", String.valueOf(itemSize));
             String url = getData.build().toString();
@@ -99,20 +101,22 @@ public class PagingSource<D> {
             Request request = new Request.Builder().url(url).get().build();
             client.newCall(request).enqueue(new Callback() {
                 @Override
-                public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                    callBack.handleRequestError(e.getCause());
+                public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                    callBack.handleRequestData(response.body().string(), PagingSource.this, adapter, LIST);
                     changeLoadingState(LoadingStates.DONE);
+                    currentPage++;
                 }
 
                 @Override
-                public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                    callBack.handleRequestData(response.body().string(), PagingSource.this, adapter, LIST);
+                public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                    callBack.handleRequestError(e.getCause());
                     changeLoadingState(LoadingStates.DONE);
                 }
             });
         }
 
     }
+
 
     public void removeAllData() {
         LIST.removeAll(LIST);
@@ -126,6 +130,14 @@ public class PagingSource<D> {
     protected void changeLoadingState(LoadingStates state) {
         isLoading = state;
         stateListener.listener();
+    }
+
+    public boolean isPagingStatus() {
+        return pagingStatus;
+    }
+
+    public void setPagingStatus(boolean pagingStatus) {
+        this.pagingStatus = pagingStatus;
     }
 
     public List<D> getLIST() {

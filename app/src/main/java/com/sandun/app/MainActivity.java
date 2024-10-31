@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         NestedScrollView scrollView = findViewById(R.id.scrollView);
         RecyclerView itemContainer = findViewById(R.id.item_container);
 
-        HttpUrl.Builder getUrlBuilder = HttpUrl.parse("http://192.168.135.138:80/babyhub/test.php").newBuilder();
+        HttpUrl.Builder getUrlBuilder = HttpUrl.parse("http://192.168.1.27:80/babyhub/test.php").newBuilder();
 
         new PagingSource<>(getUrlBuilder, 3, scrollView, itemContainer, this, true, new PagingCustomViewCallBack<ItemDTO>() {
             @Override
@@ -60,13 +60,23 @@ public class MainActivity extends AppCompatActivity {
                 if (data != null && !data.isEmpty()) {
                     JsonObject res = JsonParser.parseString(data).getAsJsonObject();
                     JsonArray array = res.getAsJsonArray("list");
-                    for (JsonElement element : array) {
-                        ItemDTO dto = gson.fromJson(element, ItemDTO.class);
-                        list.add(dto);
+                    if (array != null && !array.isEmpty()) {
+
+                        for (JsonElement element : array) {
+                            if (element != null) {
+                                ItemDTO dto = gson.fromJson(element, ItemDTO.class);
+                                list.add(dto);
+                            } else {
+                                source.setCurrentPage(0);
+                            }
+                        }
+                        MainActivity.this.runOnUiThread(() -> {
+                            adapter.notifyItemChanged(list.size() - 1);
+                        });
+                    } else {
+                        source.setPagingStatus(false);
+//                        source.setCurrentPage(0);
                     }
-                    MainActivity.this.runOnUiThread(() -> {
-                        adapter.notifyItemChanged(list.size() - 1);
-                    });
                 }
             }
 
