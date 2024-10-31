@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sandun.pagingSysyem.model.callback.PagingCallBack;
+import com.sandun.pagingSysyem.model.callback.PagingCustomViewCallBack;
 
 import java.util.List;
 
@@ -24,10 +25,23 @@ public class AdapterPagingItem<D> extends RecyclerView.Adapter<AdapterPagingItem
         this.list = list;
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        if (handler instanceof PagingCustomViewCallBack) {
+            return ((PagingCustomViewCallBack<D>) handler).handleViewType(position, list);
+        } else {
+            return super.getItemViewType(position);
+        }
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(layoutId, parent, false));
+        if (handler instanceof PagingCustomViewCallBack) {
+            return ((PagingCustomViewCallBack<D>) handler).createViewHolder(parent, viewType);
+        } else {
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(layoutId, parent, false));
+        }
     }
 
     @Override
