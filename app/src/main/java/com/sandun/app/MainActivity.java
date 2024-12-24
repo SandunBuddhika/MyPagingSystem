@@ -43,9 +43,9 @@ public class MainActivity extends AppCompatActivity {
         NestedScrollView scrollView = findViewById(R.id.scrollView);
         RecyclerView itemContainer = findViewById(R.id.item_container);
 
-        HttpUrl.Builder getUrlBuilder = HttpUrl.parse("http://192.168.1.27:80/babyhub/test.php").newBuilder();
+        HttpUrl.Builder getUrlBuilder = HttpUrl.parse("http://192.168.1.27:80/testServer/test.php").newBuilder();
 
-        new PagingSource<>(getUrlBuilder, 3, scrollView, itemContainer, this, true, new PagingCustomViewCallBack<ItemDTO>() {
+        new PagingSource<>(getUrlBuilder, 3, scrollView, itemContainer, this, new PagingCustomViewCallBack<ItemDTO>() {
             @Override
             public void handleViewCreate(ItemDTO data, AdapterPagingItem.ViewHolder viewHolder) {
                 if (data.getType() == 0) {
@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void handleRequestError(Throwable throwable) {
                 System.out.println("Got a error while loading item data");
+                System.out.println(throwable);
                 if (throwable != null) {
                     throwable.printStackTrace();
                 }

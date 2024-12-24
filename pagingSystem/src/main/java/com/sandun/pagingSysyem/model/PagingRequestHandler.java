@@ -6,7 +6,7 @@ import android.view.View;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class PagingRequestHandler< D> extends CompactMediator< D> {
+public class PagingRequestHandler<D> extends CompactMediator<D> {
 
     private RecyclerView recyclerView;
     private NestedScrollView scrollView;

@@ -36,21 +36,19 @@ public class PagingSource<D> {
     private RecyclerView.Adapter adapter;
     protected LoadingStateListener<D> stateListener;
     protected HttpUrl.Builder getData;
-    protected boolean isReverse;
 
     protected PagingCallBack<D> callBack;
     protected int layoutId;
 
     private boolean pagingStatus = true;
 
-    public PagingSource(int layoutId, HttpUrl.Builder getData, int itemSize, NestedScrollView scrollView, RecyclerView recyclerView, Activity activity, boolean isReverse, PagingCallBack<D> callBack) {
+    public PagingSource(int layoutId, HttpUrl.Builder getData, int itemSize, NestedScrollView scrollView, RecyclerView recyclerView, Activity activity, PagingCallBack<D> callBack) {
         this.itemSize = itemSize;
         this.client = new OkHttpClient.Builder().build();
         this.recyclerView = recyclerView;
         this.scrollView = scrollView;
         this.getData = getData;
         this.activity = activity;
-        this.isReverse = isReverse;
         stateListener = new LoadingStateListener<D>();
         stateListener.setSource(this);
         this.callBack = callBack;
@@ -58,14 +56,13 @@ public class PagingSource<D> {
         init();
     }
 
-    public PagingSource(HttpUrl.Builder getData, int itemSize, NestedScrollView scrollView, RecyclerView recyclerView, Activity activity, boolean isReverse, PagingCustomViewCallBack<D> callBack) {
+    public PagingSource(HttpUrl.Builder getData, int itemSize, NestedScrollView scrollView, RecyclerView recyclerView, Activity activity, PagingCustomViewCallBack<D> callBack) {
         this.itemSize = itemSize;
         this.client = new OkHttpClient.Builder().build();
         this.recyclerView = recyclerView;
         this.scrollView = scrollView;
         this.getData = getData;
         this.activity = activity;
-        this.isReverse = isReverse;
         stateListener = new LoadingStateListener<D>();
         stateListener.setSource(this);
         this.callBack = callBack;
@@ -73,15 +70,16 @@ public class PagingSource<D> {
     }
 
     private void init() {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(activity) {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(activity, RecyclerView.VERTICAL, true) {
             @Override
             public boolean canScrollVertically() {
                 return false;
             }
         };
-        if (isReverse) {
-            layoutManager.setStackFromEnd(true);
-        }
+//        if (isReverse) {
+//            layoutManager.setStackFromEnd(true);
+//            layoutManager.setReverseLayout(true);
+//        }
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         adapter = new AdapterPagingItem<>(layoutId, callBack, LIST);
         recyclerView.setLayoutManager(layoutManager);
